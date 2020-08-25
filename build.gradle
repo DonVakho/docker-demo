@@ -2,6 +2,8 @@ plugins {
 	id 'org.springframework.boot' version '2.3.2.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.8.RELEASE'
 	id 'java'
+	id 'com.palantir.docker' version '0.25.0'
+	id 'com.palantir.docker-run' version '0.25.0'
 }
 
 group = 'com.example'
@@ -10,6 +12,17 @@ sourceCompatibility = '1.8'
 
 repositories {
 	mavenCentral()
+}
+docker{
+	name "${project.name}:${project.version}"
+	copySpec.from("build/libs/")
+}
+
+dockerRun{
+	name "${project.name}"
+	image "${project.name}:${project.version}"
+	ports "8080:8080"
+	clean true
 }
 
 dependencies {
